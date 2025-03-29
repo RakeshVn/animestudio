@@ -1,13 +1,169 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* src/index.css */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-ghibli;
+    background: linear-gradient(180deg, #4AB8C1 0%, #7CD1C7 100%);
+    min-height: 100vh;
+  }
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@keyframes float {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100vw);
+  }
+}
+
+@keyframes starFloat {
+  0%, 100% {
+    opacity: 0.4;
+    transform: translateY(0) scale(0.8) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-15px) scale(1) rotate(180deg);
+  }
+}
+
+@keyframes candleFlicker {
+  0%, 100% { opacity: 1; transform: translateY(0) scale(1); }
+  25% { opacity: 0.8; transform: translateY(-2px) scale(0.98); }
+  50% { opacity: 0.9; transform: translateY(1px) scale(1.02); }
+  75% { opacity: 0.7; transform: translateY(-1.5px) scale(0.95); }
+}
+
+@keyframes sparkle {
+  0%, 100% { 
+    opacity: 0;
+    transform: translate(0, 0) scale(0);
+  }
+  50% { 
+    opacity: 1;
+    transform: translate(var(--tx), var(--ty)) scale(1);
+  }
+}
+
+.landscape-bg {
+  background-image: 
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%2392E5A1' fill-opacity='0.5' d='M0,224L80,208C160,192,320,160,480,165.3C640,171,800,213,960,224C1120,235,1280,213,1360,202.7L1440,192L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z'%3E%3C/path%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%2365B88A' fill-opacity='0.8' d='M0,288L80,261.3C160,235,320,181,480,181.3C640,181,800,235,960,245.3C1120,256,1280,224,1360,208L1440,192L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-size: 100% 50%, 100% 40%;
+}
+
+@layer components {
+  .ghibli-card {
+    @apply bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 border border-white/50;
+    box-shadow: 0 8px 32px rgba(255, 255, 255, 0.1);
+  }
+  
+  .ghibli-button {
+    @apply bg-white font-medium
+           rounded-full px-8 py-3 transition-all duration-300 
+           hover:shadow-lg transform hover:scale-105 relative
+           disabled:opacity-50 disabled:cursor-not-allowed;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 
+                0 2px 4px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  .ghibli-button:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 
+                0 4px 6px -2px rgba(0, 0, 0, 0.1);
+  }
+
+  .ghibli-button span {
+    @apply bg-clip-text text-transparent font-bold;
+    background-image: linear-gradient(135deg, #FE8BBB 0%, #9E7AFF 100%);
+  }
+
+  .magic-candle {
+    @apply absolute -top-3 left-4;
+    animation: candleFlicker 2s infinite;
+  }
+
+  .magic-candle::before {
+    content: '🕯️';
+    @apply text-xl;
+  }
+
+  .magic-star {
+    @apply absolute pointer-events-none z-20;
+    animation: starFloat 3s ease-in-out infinite;
+  }
+
+  .magic-star.left {
+    left: -0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    animation-delay: 0s;
+  }
+
+  .magic-star.right {
+    right: -0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    animation-delay: -1.5s;
+  }
+
+  .magic-star.pink path {
+    fill: #FE8BBB;
+  }
+
+  .magic-star.purple path {
+    fill: #9E7AFF;
+  }
+
+  .sparkle {
+    @apply absolute w-1 h-1 bg-yellow-200 rounded-full;
+    animation: sparkle 1.5s infinite;
+  }
+
+  .sparkle:nth-child(1) { --tx: -10px; --ty: -15px; animation-delay: 0s; }
+  .sparkle:nth-child(2) { --tx: 10px; --ty: -12px; animation-delay: 0.3s; }
+  .sparkle:nth-child(3) { --tx: -8px; --ty: -18px; animation-delay: 0.6s; }
+  .sparkle:nth-child(4) { --tx: 12px; --ty: -10px; animation-delay: 0.9s; }
+  .sparkle:nth-child(5) { --tx: -5px; --ty: -20px; animation-delay: 1.2s; }
+  
+  .ghibli-input {
+    @apply bg-white/60 backdrop-blur-sm rounded-xl 
+           border border-white/50 focus:border-[#F3B664]
+           focus:outline-none px-4 py-2 transition-all duration-300;
+  }
+
+  .cloud {
+    @apply absolute bg-white/90;
+    animation: float 60s linear infinite;
+    border-radius: 100px;
+  }
+
+  .cloud:before,
+  .cloud:after {
+    content: '';
+    position: absolute;
+    background: inherit;
+    border-radius: 50%;
+  }
+
+  .cloud:before {
+    width: 50%;
+    height: 100%;
+    top: -50%;
+    left: 20%;
+  }
+
+  .cloud:after {
+    width: 40%;
+    height: 80%;
+    top: -30%;
+    right: 20%;
+  }
 }
