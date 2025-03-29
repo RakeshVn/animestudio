@@ -17,6 +17,19 @@ const Upload = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState(null);
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const sampleImages = [
+        { id: 1, src: '/samples/anime1.jpeg', alt: 'Anime Style Sample 1' },
+        { id: 2, src: '/samples/anime2.jpeg', alt: 'Anime Style Sample 2' },
+        { id: 3, src: '/samples/anime3.jpeg', alt: 'Anime Style Sample 3' },
+        { id: 4, src: '/samples/anime4.jpeg', alt: 'Anime Style Sample 4' },
+        { id: 5, src: '/samples/anime5.jpeg', alt: 'Anime Style Sample 5' },
+        { id: 5, src: '/samples/anime6.jpeg', alt: 'Anime Style Sample 6' },
+    ];
+
+    // Create duplicated array for infinite scroll
+    const duplicatedImages = [...sampleImages, ...sampleImages];
 
     useEffect(() => {
         // Load Razorpay script
@@ -28,6 +41,21 @@ const Upload = () => {
         return () => {
             document.body.removeChild(script);
         };
+    }, []);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentIndex((prevIndex) => {
+                const nextIndex = prevIndex + 1;
+                // Reset to start when reaching the original array length
+                if (nextIndex >= sampleImages.length) {
+                    return 0;
+                }
+                return nextIndex;
+            });
+        }, 2000);
+
+        return () => clearInterval(interval);
     }, []);
 
     const handleImageChange = (e) => {
@@ -125,6 +153,46 @@ const Upload = () => {
                 onClose={() => setIsModalOpen(false)}
                 onSubmit={handleSubmit}
             />
+
+            <div className="mt-12 w-full max-w-[90vw]">
+                <h3 className="text-lg sm:text-xl font-semibold text-white mb-4 text-center">
+                    Sample Transformations
+                </h3>
+                <div className="overflow-hidden pb-4">
+                    <div 
+                        className="flex gap-4 transition-transform duration-500 ease-in-out"
+                        style={{ 
+                            transform: `translateX(-${currentIndex * (256 + 16)}px)`,
+                            width: `${duplicatedImages.length * (256 + 16)}px`
+                        }}
+                        onTransitionEnd={() => {
+                            // When reaching the end of original set, quickly reset without animation
+                            if (currentIndex >= sampleImages.length) {
+                                const element = document.querySelector('.flex.gap-4');
+                                element.style.transition = 'none';
+                                setCurrentIndex(0);
+                                // Re-enable transition after reset
+                                setTimeout(() => {
+                                    element.style.transition = 'transform 500ms ease-in-out';
+                                }, 50);
+                            }
+                        }}
+                    >
+                        {duplicatedImages.map((image, index) => (
+                            <div 
+                                key={`${image.id}-${index}`}
+                                className="flex-shrink-0 w-64 h-40 rounded-lg overflow-hidden shadow-lg"
+                            >
+                                <img
+                                    src={image.src}
+                                    alt={image.alt}
+                                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                                />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };
