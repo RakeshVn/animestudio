@@ -20,17 +20,17 @@ const Modal = ({ isOpen, onClose, onSubmit }) => {
     return (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div className="ghibli-card w-full max-w-md relative">
-                <button 
+                <button
                     onClick={onClose}
                     className="absolute top-4 right-4 text-[#2A4858]/50 hover:text-[#2A4858] transition-colors"
                 >
                     ✕
                 </button>
-                
+
                 <h3 className="text-xl font-semibold text-[#2A4858] mb-4">Enter Your Email</h3>
-                
+
                 <p className="text-sm text-[#2A4858]/70 mb-6">
-                    Enter your email and we'll send you the Dreamchanted version of your image once it's ready.
+                    Enter your email and we'll send you the ANIME version of your image once it's ready.
                 </p>
 
                 <div className="bg-[#4AB8C1]/10 rounded-lg p-4 mb-6">
@@ -39,10 +39,7 @@ const Modal = ({ isOpen, onClose, onSubmit }) => {
                     </p>
                     <div className="space-y-2">
                         <p className="text-sm text-[#2A4858]">
-                            <span className="font-semibold">Price:</span> $4.0 per image
-                        </p>
-                        <p className="text-sm text-[#2A4858]">
-                            <span className="font-semibold">Estimated time:</span> 10-15 minutes
+                            <span className="font-semibold">Estimated time:</span> 30-45 minutes
                         </p>
                     </div>
                 </div>
@@ -56,7 +53,7 @@ const Modal = ({ isOpen, onClose, onSubmit }) => {
                         className="ghibli-input w-full"
                         required
                     />
-                    
+
                     <div className="flex gap-3">
                         <button
                             onClick={() => onSubmit(email)}
