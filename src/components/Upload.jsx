@@ -159,9 +159,9 @@ const Upload = () => {
                     Sample Transformations
                 </h3>
                 <div className="overflow-hidden pb-4">
-                    <div 
+                    <div
                         className="flex gap-4 transition-transform duration-500 ease-in-out"
-                        style={{ 
+                        style={{
                             transform: `translateX(-${currentIndex * (256 + 16)}px)`,
                             width: `${duplicatedImages.length * (256 + 16)}px`
                         }}
@@ -179,7 +179,7 @@ const Upload = () => {
                         }}
                     >
                         {duplicatedImages.map((image, index) => (
-                            <div 
+                            <div
                                 key={`${image.id}-${index}`}
                                 className="flex-shrink-0 w-64 h-40 rounded-lg overflow-hidden shadow-lg"
                             >
@@ -193,6 +193,11 @@ const Upload = () => {
                     </div>
                 </div>
             </div>
+            <footer className="w-full text-center py-4 mt-8">
+                <p className="text-white/80 text-sm">
+                    © {new Date().getFullYear()} Peace Bruh LLC. All rights reserved.
+                </p>
+            </footer>
         </div>
     );
 };
